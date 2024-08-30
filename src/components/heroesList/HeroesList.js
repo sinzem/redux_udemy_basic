@@ -2,6 +2,7 @@ import {useHttp} from '../../hooks/http.hook';
 import { useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
+import { createSelector } from 'reselect';
 
 import { heroesFetching, heroesFetched, heroesFetchingError, heroDeleted } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
@@ -11,15 +12,35 @@ import './heroesList.scss';
 
 const HeroesList = () => {
 
-    const filteredHeroes = useSelector(state => {
-        if (state.activeFilter === "all") {
-            return state.heroes;
-        } else {
-            return state.heroes.filter(item => item.element === state.activeFilter)
-        }
-    })
+    // const someState = useSelector(state => ({
+    //     activeFilter: state.filters.activeFilter,
+    //     heroes: state.heroes.heroes
+    // })) /* (пример получения нужных состояний в виде одного обьекта - не рекомендуется, может вызывать лишние рендеры) */
 
-    const {heroesLoadingStatus} = useSelector(state => state.heroesLoadingStatus);
+    /* (функция по фильтрованию героев - получаем из store нужные состояния напрямую, без лишнего вынесения в обьект, как выше, тут же в хуке фильтруем и результат идет в верстку(при повторном нажатии на одинаковый фильтр будут перерендер, нужна меморизация - ниже пример с createSelector)) */
+    // const filteredHeroes = useSelector(state => {
+    //     if (state.filters.activeFilter === "all") {
+    //         return state.heroes.heroes;
+    //     } else {
+    //         return state.heroes.heroes.filter(item => item.element === state.filters.activeFilter)
+    //     }
+    // })
+
+    /* (создаем функцию фильтрации на основе модуля reselect для глубокого сравнения состояний(решит проблему лишних рендеров - при нажатии на один и тот же фильтр перерисовывается компонент, хотя обьект состояний не изменился)) */
+    const filteredHeroesSelector = createSelector( /* (используем функцию createSelector, первыми аргументами идут функции по получению нужных состояний из store, последним - функция по их использованию) */
+        (state) => state.filters.activeFilter,
+        (state) => state.heroes.heroes,
+        (filter, heroes) => { /* (аргументы функции соответствуют полученным выше полям состояний, названия даем любые, но порядок должен совпадать) */
+            if (filter === "all") {
+                return heroes;
+            } else {
+                return heroes.filter(item => item.element === filter)
+            }
+        }
+    ) /* (далее функция используется в стандартном redux-хуке по получению состояний - useSelector, подключена ниже) */
+    const filteredHeroes = useSelector(filteredHeroesSelector);
+
+    const {heroesLoadingStatus} = useSelector(state => state.heroes.heroesLoadingStatus);
     const dispatch = useDispatch();
     const {request} = useHttp();
 

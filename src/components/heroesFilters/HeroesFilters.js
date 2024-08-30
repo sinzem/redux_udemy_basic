@@ -6,14 +6,9 @@ import classNames from 'classnames';
 import { filtersFetching, filtersFetched, filtersFetchingError, activeFilterChanged } from '../../actions';
 import Spinner from '../spinner/Spinner';
 
-// Задача для этого компонента:
-// Фильтры должны формироваться на основании загруженных данных
-// Фильтры должны отображать только нужных героев при выборе
-// Активный фильтр имеет класс active
-
 const HeroesFilters = () => {
 
-    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state);
+    const {filters, filtersLoadingStatus, activeFilter} = useSelector(state => state.filters);
     const dispatch = useDispatch();
     const {request} = useHttp();
 

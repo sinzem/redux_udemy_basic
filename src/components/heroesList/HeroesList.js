@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CSSTransition, TransitionGroup} from 'react-transition-group';
 import { createSelector } from 'reselect';
 
-import { heroesFetching, heroesFetched, heroesFetchingError, heroDeleted } from '../../actions';
+import { /* heroesFetching, heroesFetched, heroesFetchingError */ fetchHeroes, heroDeleted } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 
@@ -46,10 +46,11 @@ const HeroesList = () => {
 
     useEffect(() => {
         // dispatch(heroesFetching());
-        dispatch(heroesFetching); /* (при подключении миддлвера redux-thunk можно передавать в диспетчер функцию(без вызова, запустит сам)) */
-        request("http://localhost:3001/heroes")
-            .then(data => dispatch(heroesFetched(data)))
-            .catch(() => dispatch(heroesFetchingError()))
+        // dispatch(heroesFetching); /* (при подключении миддлвера redux-thunk можно передавать в диспетчер функцию(без вызова, запустит сам)) */
+        // request("http://localhost:3001/heroes")
+        //     .then(data => dispatch(heroesFetched(data)))
+            // .catch(() => dispatch(heroesFetchingError()))
+        dispatch(fetchHeroes(request)); /* (redux-thunk позволяет передавать в dispatch функции, поэтому запрос на сервер вынесли из компонента в actions и передали в д.с как функцию) */
 
         // eslint-disable-next-line
     }, []);

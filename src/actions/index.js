@@ -36,6 +36,15 @@ export const filtersFetchingError = () => {
     }
 }
 
+/* (пример работы с redux-thunk - при создании действия оборачиваем функцию еще в одну, которая примет dispatch - теперь actioncreater может возвращать не только обьект, а и функцию(для примера таймаут)) */
+/* export const activeFilterChanged = (filter) => (dispatch) => {
+    setTimeout(() => {
+        dispatch({
+            type: 'ACTIVE_FILTER_CHANGED',
+            payload: filter
+        })
+    }, 1000) 
+} */
 export const activeFilterChanged = (filter) => {
     return {
         type: 'ACTIVE_FILTER_CHANGED',

@@ -45,7 +45,8 @@ const HeroesList = () => {
     const {request} = useHttp();
 
     useEffect(() => {
-        dispatch(heroesFetching());
+        // dispatch(heroesFetching());
+        dispatch(heroesFetching); /* (при подключении миддлвера redux-thunk можно передавать в диспетчер функцию(без вызова, запустит сам)) */
         request("http://localhost:3001/heroes")
             .then(data => dispatch(heroesFetched(data)))
             .catch(() => dispatch(heroesFetchingError()))

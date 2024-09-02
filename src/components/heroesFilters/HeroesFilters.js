@@ -18,7 +18,7 @@ const HeroesFilters = () => {
         // request("http://localhost:3001/filters")
         //     .then(data => dispatch(filtersFetched(data)))
         //     .catch(() => dispatch(filtersFetchingError()))
-        dispatch(fetchFilters(request));
+        dispatch(fetchFilters(request)); /* (redux-thunk позволяет передавать в dispatch функции, поэтому запрос на сервер вынесли из компонента в actions и передали в д.с как функцию) */
         // eslint-disable-next-line
     }, []);
 

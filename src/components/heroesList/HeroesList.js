@@ -16,7 +16,7 @@ const HeroesList = () => {
     //     activeFilter: state.filters.activeFilter,
     //     heroes: state.heroes.heroes
     // })) /* (пример получения нужных состояний в виде одного обьекта - не рекомендуется, может вызывать лишние рендеры) */
-
+    // --------
     /* (функция по фильтрованию героев - получаем из store нужные состояния напрямую, без лишнего вынесения в обьект, как выше, тут же в хуке фильтруем и результат идет в верстку(при повторном нажатии на одинаковый фильтр будут перерендер, нужна меморизация - ниже пример с createSelector)) */
     // const filteredHeroes = useSelector(state => {
     //     if (state.filters.activeFilter === "all") {
@@ -25,7 +25,7 @@ const HeroesList = () => {
     //         return state.heroes.heroes.filter(item => item.element === state.filters.activeFilter)
     //     }
     // })
-
+    // -------
     /* (создаем функцию фильтрации на основе модуля reselect для глубокого сравнения состояний(решит проблему лишних рендеров - при нажатии на один и тот же фильтр перерисовывается компонент, хотя обьект состояний не изменился)) */
     const filteredHeroesSelector = createSelector( /* (используем функцию createSelector, первыми аргументами идут функции по получению нужных состояний из store, последним - функция по их использованию) */
         (state) => state.filters.activeFilter,
